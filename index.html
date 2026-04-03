@@ -35,6 +35,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 #pw-screen p { color:rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:2rem; }
 #pw-screen input { width:280px; padding:14px 18px; border:2px solid rgba(218,165,32,0.3); border-radius:12px; background:rgba(255,255,255,0.08); color:#fff; font-size:1rem; text-align:center; outline:none; }
 #pw-screen input:focus { border-color:#DAA520; }
+#pw-screen button { padding:12px 40px; border-radius:12px; border:none; background:#DAA520; color:#1a1a2e; font-size:1rem; font-weight:700; cursor:pointer; margin-top:12px; min-height:48px; }
+#pw-screen button:active { transform:scale(.96); }
 #pw-screen .err { color:#E4405F; font-size:0.8rem; margin-top:0.5rem; min-height:1.2em; }
 
 /* Header */
@@ -151,6 +153,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
   <h1>MUMEI</h1>
   <p>Distribution Hub</p>
   <input type="password" id="pw-input" placeholder="パスワードを入力" autofocus>
+  <button onclick="doUnlock()">Unlock</button>
   <div class="err" id="pw-err"></div>
 </div>
 
@@ -841,18 +844,21 @@ async function sha256(msg) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-document.getElementById('pw-input').addEventListener('keydown', async e => {
-  if (e.key === 'Enter') {
-    const hash = await sha256(e.target.value);
-    if (hash === PW_HASH) {
-      document.getElementById('pw-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      localStorage.setItem('mumei-hub-auth', hash);
-      init();
-    } else {
-      document.getElementById('pw-err').textContent = 'incorrect';
-    }
+async function doUnlock() {
+  const val = document.getElementById('pw-input').value;
+  const hash = await sha256(val);
+  if (hash === PW_HASH) {
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    localStorage.setItem('mumei-hub-auth', PW_HASH);
+    init();
+  } else {
+    document.getElementById('pw-err').textContent = 'incorrect';
+    document.getElementById('pw-input').value = '';
   }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doUnlock();
 });
 
 // Auto-login
