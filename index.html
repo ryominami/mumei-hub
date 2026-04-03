@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>MUMEI Distribution Hub</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTVVNRUkgRGlzdHJpYnV0aW9uIEh1YiIsInNob3J0X25hbWUiOiJNVU1FSSBIdWIiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxYTFhMmUiLCJ0aGVtZV9jb2xvciI6IiMxYTFhMmUiLCJpY29ucyI6W119">
+<style>
+:root {
+  --bg: #f0f2f5;
+  --card: #fff;
+  --text: #1a1a2e;
+  --text-secondary: #666;
+  --border: #e0e0e0;
+  --accent: #DAA520;
+  --ig: #E4405F;
+  --yt: #FF0000;
+  --x: #000000;
+  --success: #34C759;
+  --pending: #FF9500;
+  --phase1: #4A90D9;
+  --phase2: #7B68EE;
+  --phase3: #E4405F;
+  --phase4: #DAA520;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+/* Password Screen */
+#pw-screen { position:fixed; inset:0; z-index:9999; background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460); display:flex; align-items:center; justify-content:center; flex-direction:column; }
+#pw-screen h1 { color:#DAA520; font-size:2rem; margin-bottom:0.5rem; letter-spacing:0.3em; }
+#pw-screen p { color:rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:2rem; }
+#pw-screen input { width:280px; padding:14px 18px; border:2px solid rgba(218,165,32,0.3); border-radius:12px; background:rgba(255,255,255,0.08); color:#fff; font-size:1rem; text-align:center; outline:none; }
+#pw-screen input:focus { border-color:#DAA520; }
+#pw-screen .err { color:#E4405F; font-size:0.8rem; margin-top:0.5rem; min-height:1.2em; }
+
+/* Header */
+.header { background:linear-gradient(135deg,#1a1a2e,#16213e); color:#fff; padding:16px 20px 12px; position:sticky; top:0; z-index:100; }
+.header h1 { font-size:1.3rem; letter-spacing:0.15em; color:#DAA520; }
+.header small { color:rgba(255,255,255,0.5); font-size:0.75rem; }
+
+/* Tab Bar */
+.tab-bar { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--border); display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
+.tab-bar button { flex:1; padding:10px 4px 8px; border:none; background:none; font-size:0.65rem; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
+.tab-bar button.active { color:var(--accent); }
+.tab-bar button .icon { font-size:1.4rem; }
+
+/* Content */
+.content { padding:12px 16px 80px; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* Calendar */
+.phase-header { font-size:0.8rem; font-weight:700; color:#fff; padding:8px 14px; border-radius:8px; margin:12px 0 8px; }
+.phase-1 { background:var(--phase1); }
+.phase-2 { background:var(--phase2); }
+.phase-3 { background:var(--phase3); }
+.phase-4 { background:var(--phase4); }
+
+.cal-card { background:var(--card); border-radius:12px; padding:14px; margin-bottom:8px; box-shadow:0 1px 3px rgba(0,0,0,0.06); display:flex; gap:12px; align-items:center; }
+.cal-day { min-width:48px; text-align:center; }
+.cal-day .num { font-size:1.6rem; font-weight:800; color:var(--text); line-height:1; }
+.cal-day .label { font-size:0.65rem; color:var(--text-secondary); }
+.cal-info { flex:1; }
+.cal-info .title { font-size:0.95rem; font-weight:600; }
+.cal-info .meta { font-size:0.75rem; color:var(--text-secondary); margin-top:2px; }
+.cal-platforms { display:flex; gap:4px; }
+.cal-platforms .dot { width:10px; height:10px; border-radius:50%; }
+.cal-status { cursor:pointer; padding:6px 12px; border-radius:20px; font-size:0.7rem; font-weight:600; border:none; }
+.cal-status.pending { background:#FFF3E0; color:var(--pending); }
+.cal-status.posted { background:#E8F5E9; color:var(--success); }
+
+/* Episode Cards */
+.ep-card { background:var(--card); border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.ep-header { padding:16px; display:flex; align-items:center; gap:12px; }
+.ep-num { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; font-weight:800; color:#fff; }
+.ep-title-block h3 { font-size:1.05rem; }
+.ep-title-block .sub { font-size:0.8rem; color:var(--text-secondary); }
+.ep-chars { padding:0 16px 8px; display:flex; gap:6px; flex-wrap:wrap; }
+.ep-chars span { font-size:0.7rem; background:var(--bg); padding:3px 10px; border-radius:12px; }
+
+.platform-tabs { display:flex; border-bottom:1px solid var(--border); }
+.platform-tabs button { flex:1; padding:10px; border:none; background:none; font-size:0.8rem; font-weight:600; cursor:pointer; color:var(--text-secondary); border-bottom:3px solid transparent; }
+.platform-tabs button.active { border-bottom-color:var(--accent); color:var(--text); }
+
+.caption-area { padding:16px; min-height:200px; }
+.caption-text { font-size:0.85rem; line-height:1.6; white-space:pre-wrap; word-break:break-word; background:var(--bg); padding:14px; border-radius:10px; max-height:300px; overflow-y:auto; }
+.caption-actions { display:flex; gap:8px; padding:0 16px 16px; }
+.caption-actions button { flex:1; padding:10px; border:none; border-radius:10px; font-size:0.8rem; font-weight:600; cursor:pointer; }
+.btn-copy { background:var(--bg); color:var(--text); }
+.btn-copy:active { background:#d0d0d0; }
+.btn-post { color:#fff; }
+.btn-ig { background:var(--ig); }
+.btn-yt { background:var(--yt); }
+.btn-x { background:var(--x); }
+
+.ep-status-row { display:flex; gap:6px; padding:0 16px 16px; }
+.ep-status-btn { flex:1; padding:8px; border-radius:10px; font-size:0.7rem; font-weight:600; cursor:pointer; text-align:center; border:2px solid var(--border); background:#fff; }
+.ep-status-btn.posted { border-color:var(--success); background:#E8F5E9; color:var(--success); }
+.x-count { font-size:0.75rem; color:var(--text-secondary); text-align:right; padding:4px 16px 0; }
+
+/* Analytics */
+.stats-overview { background:var(--card); border-radius:16px; padding:20px; margin-bottom:16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.stats-overview .big { font-size:3rem; font-weight:800; color:var(--accent); }
+.stats-overview .label { font-size:0.85rem; color:var(--text-secondary); }
+.progress-bar { height:10px; background:var(--bg); border-radius:5px; margin-top:12px; overflow:hidden; }
+.progress-bar .fill { height:100%; background:linear-gradient(90deg,var(--accent),#DAA520); border-radius:5px; transition:width 0.5s; }
+.stats-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:12px; }
+.stat-card { background:var(--card); border-radius:12px; padding:14px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.stat-card .num { font-size:1.5rem; font-weight:800; }
+.stat-card .lbl { font-size:0.7rem; color:var(--text-secondary); }
+
+.ep-status-table { background:var(--card); border-radius:16px; padding:16px; margin-top:16px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.ep-status-table h3 { font-size:0.9rem; margin-bottom:12px; }
+.ep-status-table table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.ep-status-table th { text-align:left; padding:8px 6px; border-bottom:2px solid var(--border); font-size:0.7rem; color:var(--text-secondary); }
+.ep-status-table td { padding:8px 6px; border-bottom:1px solid var(--border); }
+.status-dot { display:inline-block; width:10px; height:10px; border-radius:50%; }
+.status-dot.posted { background:var(--success); }
+.status-dot.pending { background:var(--pending); }
+
+/* Assets */
+.char-card { background:var(--card); border-radius:16px; margin-bottom:16px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.char-header { padding:16px; display:flex; align-items:center; gap:12px; }
+.char-portrait { width:64px; height:64px; border-radius:12px; object-fit:cover; }
+.char-name h3 { font-size:1rem; }
+.char-name .role { font-size:0.8rem; color:var(--text-secondary); }
+.char-images { padding:0 16px 16px; }
+.char-images img { width:100%; border-radius:10px; margin-bottom:8px; }
+.char-images .img-label { font-size:0.7rem; color:var(--text-secondary); margin-bottom:4px; }
+.url-copy { display:flex; gap:6px; margin-bottom:8px; }
+.url-copy input { flex:1; font-size:0.7rem; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); }
+.url-copy button { padding:8px 14px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:0.7rem; font-weight:600; cursor:pointer; white-space:nowrap; }
+
+/* Toast */
+.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 24px; border-radius:20px; font-size:0.8rem; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+.toast.show { opacity:1; }
+
+@media(min-width:768px) {
+  .content { max-width:640px; margin:0 auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- Password Screen -->
+<div id="pw-screen">
+  <h1>MUMEI</h1>
+  <p>Distribution Hub</p>
+  <input type="password" id="pw-input" placeholder="パスワードを入力" autofocus>
+  <div class="err" id="pw-err"></div>
+</div>
+
+<!-- Main App -->
+<div id="app" style="display:none">
+  <div class="header">
+    <h1>MUMEI</h1>
+    <small>Distribution Hub -- 9 Episodes x 3 Platforms</small>
+  </div>
+
+  <div class="content">
+    <div id="tab-calendar" class="tab-panel active"></div>
+    <div id="tab-episodes" class="tab-panel"></div>
+    <div id="tab-stats" class="tab-panel"></div>
+    <div id="tab-assets" class="tab-panel"></div>
+  </div>
+
+  <div class="tab-bar">
+    <button class="active" data-tab="calendar"><span class="icon">&#128197;</span>Calendar</button>
+    <button data-tab="episodes"><span class="icon">&#127916;</span>Episodes</button>
+    <button data-tab="stats"><span class="icon">&#128202;</span>Stats</button>
+    <button data-tab="assets"><span class="icon">&#128444;</span>Assets</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// --- Data ---
+const EPISODES = [
+    {
+      num: 1,
+      title: `対馬の子`,
+      enTitle: `Child of Tsushima`,
+      duration: 70,
+      emotion: `☀️`,
+      emotionLabel: `穏やか`,
+      color: `#F5A623`,
+      content: `平和な漁村の朝。宗介と父の日常。父が語る「武士の名乗り」の教え。`,
+      enContent: `A peaceful morning in a fishing village. Sosuke and his father's daily life. His father teaches him the warrior's way of announcing one's name.`,
+      characters: [`宗介`, `宗仁`],
+      ig: `朝日に染まる漁村。
+少年は、まだ何も知らない——
+
+平和な漁村の朝。宗介と父の日常。父が語る「武士の名乗り」の教え。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP1/9 「対馬の子」70秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP1 "対馬の子" (Child of Tsushima) | AI Anime Short Film`,
+      ytDesc: `A peaceful morning in a fishing village. Sosuke and his father's daily life. His father teaches him the warrior's way of announcing one's name.
+平和な漁村の朝。宗介と父の日常。父が語る「武士の名乗り」の教え。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 1/9 | 70s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `無銘MUMEI、今日からスタート。
+
+AI×Remotionで作った60秒シネマティックアニメ。1274年の対馬、16歳の少年の物語。
+
+全9話、ゼロフォロワーからどこまでいけるか。EP1「対馬の子」`,
+      xCount: 168
+    },
+    {
+      num: 2,
+      title: `黒い壁`,
+      enTitle: `The Black Wall`,
+      duration: 75,
+      emotion: `😨`,
+      emotionLabel: `恐怖`,
+      color: `#4A4A4A`,
+      content: `水平線を埋め尽くす900隻。恐怖に凍りつく島民。父が鎧を着る。`,
+      enContent: `900 ships fill the horizon. The islanders freeze in terror. His father dons armor.`,
+      characters: [`宗介`, `宗仁`],
+      ig: `水平線が、黒く染まっていく。
+900隻。その数を、誰が信じただろう。
+
+水平線を埋め尽くす900隻。恐怖に凍りつく島民。父が鎧を着る。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP2/9 「黒い壁」75秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP2 "黒い壁" (The Black Wall) | AI Anime Short Film`,
+      ytDesc: `900 ships fill the horizon. The islanders freeze in terror. His father dons armor.
+水平線を埋め尽くす900隻。恐怖に凍りつく島民。父が鎧を着る。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 2/9 | 75s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP2「黒い壁」公開。
+
+900隻が水平線を埋め尽くす恐怖を、どう70秒で伝えるか。AI動画生成の限界に挑んだ回。
+
+父の「名を覚えておけ」が最終話で回収されます。`,
+      xCount: 150
+    },
+    {
+      num: 3,
+      title: `名乗り`,
+      enTitle: `The Challenge`,
+      duration: 90,
+      emotion: `😭`,
+      emotionLabel: `慟哭`,
+      color: `#D0021B`,
+      content: `父が浜辺で名乗りを上げる。蒙古は矢の豪雨で応える。79騎の侍が散る。`,
+      enContent: `His father announces his name on the beach. The Mongols answer with a rain of arrows. 79 samurai fall.`,
+      characters: [`宗介`, `宗仁`, `バトゥル`],
+      ig: `父は、名乗りを上げた。
+それが最期の言葉になるとも知らず——
+
+父が浜辺で名乗りを上げる。蒙古は矢の豪雨で応える。79騎の侍が散る。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP3/9 「名乗り」90秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP3 "名乗り" (The Challenge) | AI Anime Short Film`,
+      ytDesc: `His father announces his name on the beach. The Mongols answer with a rain of arrows. 79 samurai fall.
+父が浜辺で名乗りを上げる。蒙古は矢の豪雨で応える。79騎の侍が散る。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 3/9 | 90s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP3「名乗り」——シリーズ最高に辛い回。
+
+79騎の侍が名乗りを上げて散る。蒙古は名乗りなんか待たない。この非対称が1274年のリアル。
+
+90秒に父の最期を詰め込んだ。`,
+      xCount: 155
+    },
+    {
+      num: 4,
+      title: `海へ`,
+      enTitle: `To the Sea`,
+      duration: 80,
+      emotion: `💪`,
+      emotionLabel: `決死`,
+      color: `#7B68EE`,
+      content: `村が燃える中、老婆を背負い走る宗介。矢を受けながら崖から海へ飛ぶ。`,
+      enContent: `Sosuke runs through the burning village carrying an old woman. Hit by an arrow, he leaps from a cliff into the sea.`,
+      characters: [`宗介`],
+      ig: `燃える村。矢が飛ぶ。
+少年は、海へ飛んだ。
+
+村が燃える中、老婆を背負い走る宗介。矢を受けながら崖から海へ飛ぶ。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP4/9 「海へ」80秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP4 "海へ" (To the Sea) | AI Anime Short Film`,
+      ytDesc: `Sosuke runs through the burning village carrying an old woman. Hit by an arrow, he leaps from a cliff into the sea.
+村が燃える中、老婆を背負い走る宗介。矢を受けながら崖から海へ飛ぶ。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 4/9 | 80s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP4「海へ」完成。
+
+村が燃える中、崖から海へ飛ぶシーン。Klingの動画生成で一番苦戦した。でも矢が肩に刺さる瞬間の表現は過去最高。
+
+ここから物語が動き出す。`,
+      xCount: 152
+    },
+    {
+      num: 5,
+      title: `鍛冶場`,
+      enTitle: `The Forge`,
+      duration: 75,
+      emotion: `🔥`,
+      emotionLabel: `温もり`,
+      color: `#E8860C`,
+      content: `千鶴の鍛冶場で傷を癒す。「壊す者」と「創る者」の出会い。折れた刀を「直せる」。`,
+      enContent: `Sosuke heals at Chizuru's forge. The meeting of 'one who destroys' and 'one who creates.' A broken sword can be reforged.`,
+      characters: [`宗介`, `千鶴`],
+      ig: `「壊れたものは、直せる」
+鍛冶場の炎が、少年の心を照らす。
+
+千鶴の鍛冶場で傷を癒す。「壊す者」と「創る者」の出会い。折れた刀を「直せる」。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP5/9 「鍛冶場」75秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP5 "鍛冶場" (The Forge) | AI Anime Short Film`,
+      ytDesc: `Sosuke heals at Chizuru's forge. The meeting of 'one who destroys' and 'one who creates.' A broken sword can be reforged.
+千鶴の鍛冶場で傷を癒す。「壊す者」と「創る者」の出会い。折れた刀を「直せる」。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 5/9 | 75s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP5「鍛冶場」は意図的にテンポを落とした回。
+
+戦闘の合間に「創る者」千鶴との出会い。折れた刀を直せると言われた瞬間、宗介の目が変わる。
+
+AIで「静の演技」を描く難しさよ。`,
+      xCount: 167
+    },
+    {
+      num: 6,
+      title: `てつはう`,
+      enTitle: `Tetsuhau`,
+      duration: 90,
+      emotion: `💥`,
+      emotionLabel: `戦慄`,
+      color: `#B8860B`,
+      content: `博多湾大激戦。てつはう爆発。劉明が敵陣から脱走。宗介は石塁を背に戦うが——`,
+      enContent: `The great battle of Hakata Bay. Tetsuhau explosions. Liu Ming deserts from the enemy. Sosuke fights with his back to the stone wall, but—`,
+      characters: [`宗介`, `バトゥル`, `竹崎季長`, `劉明`],
+      ig: `てつはう——大地を揺るがす轟音。
+博多湾が、炎に包まれた。
+
+博多湾大激戦。てつはう爆発。劉明が敵陣から脱走。宗介は石塁を背に戦うが——
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP6/9 「てつはう」90秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP6 "てつはう" (Tetsuhau) | AI Anime Short Film`,
+      ytDesc: `The great battle of Hakata Bay. Tetsuhau explosions. Liu Ming deserts from the enemy. Sosuke fights with his back to the stone wall, but—
+博多湾大激戦。てつはう爆発。劉明が敵陣から脱走。宗介は石塁を背に戦うが——
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 6/9 | 90s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP6「てつはう」——博多湾大激戦。
+
+爆発シーンのVFXはSeedanceが優秀だった。劉明の脱走シーンは3テイク撮り直し。
+
+4キャラ同時登場回、AI一貫性の限界との戦い。`,
+      xCount: 152
+    },
+    {
+      num: 7,
+      title: `打ち直し`,
+      enTitle: `Reforging`,
+      duration: 80,
+      emotion: `🔨`,
+      emotionLabel: `再生`,
+      color: `#CD853F`,
+      content: `弘安の役前夜。千鶴が「壊れたものは打ち直せば強くなる」。一晩かけた再鍛造。`,
+      enContent: `The night before the Koan Invasion. Chizuru: 'What is broken becomes stronger when reforged.' An all-night reforging.`,
+      characters: [`宗介`, `千鶴`],
+      ig: `「壊れたものは打ち直せば強くなる」
+一晩かけた再鍛造。刀に、魂を込める。
+
+弘安の役前夜。千鶴が「壊れたものは打ち直せば強くなる」。一晩かけた再鍛造。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP7/9 「打ち直し」80秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP7 "打ち直し" (Reforging) | AI Anime Short Film`,
+      ytDesc: `The night before the Koan Invasion. Chizuru: 'What is broken becomes stronger when reforged.' An all-night reforging.
+弘安の役前夜。千鶴が「壊れたものは打ち直せば強くなる」。一晩かけた再鍛造。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 7/9 | 80s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP7「打ち直し」。千鶴のセリフ「壊れたものは打ち直せば強くなる」がシリーズの核。
+
+鍛冶シーンの炎の表現、Veoが一発で決めてくれた。
+
+次回はいよいよ最終決闘。`,
+      xCount: 154
+    },
+    {
+      num: 8,
+      title: `神風`,
+      enTitle: `Kamikaze`,
+      duration: 90,
+      emotion: `⚔️`,
+      emotionLabel: `極限`,
+      color: `#1C1C1C`,
+      content: `燃える蒙古船上で最終決闘。宗介とバトゥル、互いに「守る者」を見る。嵐が——`,
+      enContent: `The final duel on a burning Mongol ship. Sosuke and Batur see in each other 'one who protects.' The storm comes—`,
+      characters: [`宗介`, `バトゥル`],
+      ig: `稲妻が照らす、二人の剣。
+宿敵との最終決闘——そして、神風。
+
+燃える蒙古船上で最終決闘。宗介とバトゥル、互いに「守る者」を見る。嵐が——
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP8/9 「神風」90秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP8 "神風" (Kamikaze) | AI Anime Short Film`,
+      ytDesc: `The final duel on a burning Mongol ship. Sosuke and Batur see in each other 'one who protects.' The storm comes—
+燃える蒙古船上で最終決闘。宗介とバトゥル、互いに「守る者」を見る。嵐が——
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 8/9 | 90s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `EP8「神風」公開。
+
+90秒に最終決闘と嵐を詰め込んだ。バトゥルの木馬が海に沈むカット、AIが偶然生んだ構図が完璧だった。
+
+敵にも守るものがあった——それが描きたかった。`,
+      xCount: 161
+    },
+    {
+      num: 9,
+      title: `絵巻`,
+      enTitle: `Emaki`,
+      duration: 75,
+      emotion: `🌅`,
+      emotionLabel: `カタルシス`,
+      color: `#DAA520`,
+      content: `嵐の翌朝。生き残った4人が朝日を見る。竹崎が絵巻に描く——名もなき英雄の記録。`,
+      enContent: `The morning after the storm. Four survivors watch the sunrise. Takezaki paints on a scroll—a record of nameless heroes.`,
+      characters: [`宗介`, `千鶴`, `竹崎季長`, `劉明`],
+      ig: `嵐が去った朝。
+4人が見つめる朝日——これが、名もなき者たちの物語。
+
+嵐の翌朝。生き残った4人が朝日を見る。竹崎が絵巻に描く——名もなき英雄の記録。
+
+全編AIで制作したシネマティックアニメシリーズ。
+日本語音声 + 英語字幕 | Kling, Veo, Seedance + Remotion
+
+無銘 MUMEI EP9/9 「絵巻」75秒
+
+フォローして次のエピソードをお見逃しなく
+
+#無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      ytTitle: `MUMEI EP9 "絵巻" (Emaki) | AI Anime Short Film`,
+      ytDesc: `The morning after the storm. Four survivors watch the sunrise. Takezaki paints on a scroll—a record of nameless heroes.
+嵐の翌朝。生き残った4人が朝日を見る。竹崎が絵巻に描く——名もなき英雄の記録。
+
+MUMEI (No Name) — A cinematic anime series about a 16-year-old boy
+in 1274 Japan during the Mongol invasion. 9 episodes, all made with AI.
+
+Made with: Kling, Veo, Seedance + Remotion
+Voice: Japanese | Subtitles: English
+
+Episode 9/9 | 75s
+
+#AIAnime #ShortFilm #MUMEI #MongolInvasion #Kamakura #AIVideo #AIart`,
+      x: `無銘MUMEI、全9話完結。
+
+EP9「絵巻」——最後のカットで蒙古襲来絵詞にモーフィング。名もなき者が歴史に残る瞬間。
+
+ゼロからAIだけで作ったアニメシリーズ。ここまで見てくれた人、ありがとう。`,
+      xCount: 181
+    }
+  ];
+
+const CHARACTERS = [
+    {
+      name: `宗介`,
+      enName: `Sosuke`,
+      role: `主人公`,
+      portrait: `https://v3b.fal.media/files/b/0a8f80b7/Zbv78mB0H9v32vXmOWBq1_DnL3MbOZ.jpg`,
+      threeview: `https://v3b.fal.media/files/b/0a8f9978/F_lPiT8Mo8CQDwtFNI5v4_RPadSdy9.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91b00b/lMtv47Vov8PwXg58aYAyW_X3cyTWdX.png`
+    },
+    {
+      name: `バトゥル`,
+      enName: `Batur`,
+      role: `宿敵`,
+      portrait: `https://v3b.fal.media/files/b/0a8f8118/V998JXTHQTf2X9-LV0mNE_GdklxGYO.jpg`,
+      threeview: `https://v3b.fal.media/files/b/0a8f9979/69Z9VFUURuHS76sU55bID_ZieT6wqW.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91b0d2/2kHqWTdrxbQw5W8HBUZ8Q_NBDFw0Au.png`
+    },
+    {
+      name: `竹崎季長`,
+      enName: `Takezaki Suenaga`,
+      role: `記録者`,
+      portrait: `https://v3b.fal.media/files/b/0a8f811a/pfe7WruUSwAY92rbs-9jT_usdscsdn.jpg`,
+      threeview: `https://v3b.fal.media/files/b/0a8f997b/EgRMnGQOb85T095jeNuPW_hgLKBMSM.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91ac3d/ItmoCXL844TJuGDLUtOJd_hOosIXyb.png`
+    },
+    {
+      name: `千鶴`,
+      enName: `Chizuru`,
+      role: `ヒロイン`,
+      portrait: `https://v3b.fal.media/files/b/0a8f811b/MBEaoWMRL3QxfA2qOmW6s_4kBeMrHC.jpg`,
+      threeview: `https://v3b.fal.media/files/b/0a8f997c/2eATYkYVrDwLwT0manjIz_79A1vlTR.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91ac3d/Fq2zgNFFHKdrGfkXw7NaR_UKIOR30A.png`
+    },
+    {
+      name: `劉明`,
+      enName: `Liu Ming`,
+      role: `脱走兵`,
+      portrait: `https://v3b.fal.media/files/b/0a8f811d/EdMqVSabyN0OWcQAOzQva_OU9Ez6xT.jpg`,
+      threeview: `https://v3b.fal.media/files/b/0a8f997d/09-Pqr7cnwgySYKM_tWz7_72hsjiSy.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91ac3e/70mxSO2X1iqGw-ZcxSYSG_xwEDHktv.png`
+    },
+    {
+      name: `宗仁`,
+      enName: `Sojin`,
+      role: `父`,
+      portrait: `https://v3b.fal.media/files/b/0a902123/xhElJUvLAnnW-G2HKVBM7_e7d98c31d0bf4818aaa13b5f50916dcf.png`,
+      threeview: `https://v3b.fal.media/files/b/0a902143/Z34v7UvWHOrgpxclXG5MW_9111528a837049f8a22d41381edc667c.png`,
+      closeup: `https://v3b.fal.media/files/b/0a91ac3f/tiiANsEHcbqDewRp0S7WJ_QyWwcB0O.png`
+    }
+  ];
+
+const SCHEDULE = [
+    {
+      day: 1,
+      phase: 1,
+      phaseLabel: `Phase 1: Daily Launch`,
+      type: `episode`,
+      ep: 1,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 2,
+      phase: 1,
+      phaseLabel: `Phase 1: Daily Launch`,
+      type: `episode`,
+      ep: 2,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 3,
+      phase: 1,
+      phaseLabel: `Phase 1: Daily Launch`,
+      type: `episode`,
+      ep: 3,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 4,
+      phase: 1,
+      phaseLabel: `Phase 1: Daily Launch`,
+      type: `bts`,
+      
+      label: `BTS: AI制作の裏側 / Making-of EP1-3`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 5,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `episode`,
+      ep: 4,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 6,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `キャラクター紹介: 千鶴`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 7,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `BTS: 動画生成比較 Kling vs Veo`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 8,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `episode`,
+      ep: 5,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 9,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `キャラクター紹介: バトゥル`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 10,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `BTS: 音声・BGM制作の裏側`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 11,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `episode`,
+      ep: 6,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 12,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `BTS: 字幕・エフェクト制作`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 13,
+      phase: 2,
+      phaseLabel: `Phase 2: Tue/Fri 21:00`,
+      type: `bts`,
+      
+      label: `キャラクター紹介: 劉明 & 竹崎季長`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 14,
+      phase: 3,
+      phaseLabel: `Phase 3: Back-to-Back`,
+      type: `episode`,
+      ep: 7,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 15,
+      phase: 3,
+      phaseLabel: `Phase 3: Back-to-Back`,
+      type: `episode`,
+      ep: 8,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 16,
+      phase: 3,
+      phaseLabel: `Phase 3: Back-to-Back`,
+      type: `bts`,
+      
+      label: `BTS: EP8「神風」メイキング — 最終決闘の裏側`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 17,
+      phase: 4,
+      phaseLabel: `Phase 4: Finale`,
+      type: `episode`,
+      ep: 9,
+      
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `21:00 JST`
+    },
+    {
+      day: 18,
+      phase: 4,
+      phaseLabel: `Phase 4: Finale`,
+      type: `bts`,
+      
+      label: `総集編予告 + シリーズ振り返り`,
+      platforms: [`instagram`, `youtube`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 19,
+      phase: 4,
+      phaseLabel: `Phase 4: Finale`,
+      type: `bts`,
+      
+      label: `BTS: AI制作全工程まとめ + 制作コスト公開`,
+      platforms: [`instagram`, `x`],
+      time: `12:00 JST`
+    },
+    {
+      day: 20,
+      phase: 4,
+      phaseLabel: `Phase 4: Finale`,
+      type: `compilation`,
+      
+      label: `MUMEI 全9話 総集編 (10min)`,
+      platforms: [`youtube`],
+      time: `21:00 JST`
+    }
+  ];
+
+const PW_HASH = 'a37ddc209a22a1c3912546bf963d878b258363129a9a07a0730a9ef8555724f7';
+
+// --- Password ---
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+document.getElementById('pw-input').addEventListener('keydown', async e => {
+  if (e.key === 'Enter') {
+    const hash = await sha256(e.target.value);
+    if (hash === PW_HASH) {
+      document.getElementById('pw-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      localStorage.setItem('mumei-hub-auth', hash);
+      init();
+    } else {
+      document.getElementById('pw-err').textContent = 'incorrect';
+    }
+  }
+});
+
+// Auto-login
+(async () => {
+  if (localStorage.getItem('mumei-hub-auth') === PW_HASH) {
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    init();
+  }
+})();
+
+// --- State ---
+function getStatus() {
+  return JSON.parse(localStorage.getItem('mumei-hub-status') || '{}');
+}
+function setStatus(key, val) {
+  const s = getStatus();
+  s[key] = val;
+  localStorage.setItem('mumei-hub-status', JSON.stringify(s));
+}
+function getCalStatus(day) {
+  return getStatus()['cal-' + day] || 'pending';
+}
+function getEpPlatformStatus(ep, platform) {
+  return getStatus()['ep-' + ep + '-' + platform] || 'pending';
+}
+
+// --- Toast ---
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// --- Copy ---
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(() => toast('Copied!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast('Copied!');
+  });
+}
+
+// --- Tabs ---
+document.querySelectorAll('.tab-bar button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// --- Render Calendar ---
+function renderCalendar() {
+  const el = document.getElementById('tab-calendar');
+  let html = '<h2 style="font-size:1.1rem;margin-bottom:12px">Distribution Calendar</h2>';
+  let lastPhase = 0;
+
+  SCHEDULE.forEach(s => {
+    if (s.phase !== lastPhase) {
+      html += `<div class="phase-header phase-${s.phase}">${s.phaseLabel}</div>`;
+      lastPhase = s.phase;
+    }
+
+    const ep = s.ep ? EPISODES.find(e => e.num === s.ep) : null;
+    const title = ep ? `EP${ep.num} "${ep.title}" ${ep.emotion}` : (s.label || 'Compilation');
+    const meta = s.time + ' | ' + s.platforms.map(p => p === 'instagram' ? 'IG' : p === 'youtube' ? 'YT' : 'X').join(' + ');
+    const statusKey = 'cal-' + s.day;
+    const status = getCalStatus(s.day);
+
+    html += `<div class="cal-card">
+      <div class="cal-day">
+        <div class="num">${s.day}</div>
+        <div class="label">Day</div>
+      </div>
+      <div class="cal-info">
+        <div class="title">${title}</div>
+        <div class="meta">${meta}</div>
+      </div>
+      <div class="cal-platforms">
+        ${s.platforms.map(p => `<div class="dot" style="background:var(--${p})"></div>`).join('')}
+      </div>
+      <button class="cal-status ${status}" onclick="toggleCalStatus(${s.day},this)">
+        ${status === 'posted' ? 'Posted' : 'Pending'}
+      </button>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+function toggleCalStatus(day, btn) {
+  const current = getCalStatus(day);
+  const next = current === 'pending' ? 'posted' : 'pending';
+  setStatus('cal-' + day, next);
+  btn.className = 'cal-status ' + next;
+  btn.textContent = next === 'posted' ? 'Posted' : 'Pending';
+  renderStats();
+}
+
+// --- Render Episodes ---
+function renderEpisodes() {
+  const el = document.getElementById('tab-episodes');
+  let html = '<h2 style="font-size:1.1rem;margin-bottom:12px">Episode Captions</h2>';
+
+  EPISODES.forEach(ep => {
+    const captions = {
+      ig: ep.ig,
+      yt: ep.ytTitle + '\n\n' + ep.ytDesc,
+      x: ep.x
+    };
+
+    html += `<div class="ep-card" id="ep-card-${ep.num}">
+      <div class="ep-header">
+        <div class="ep-num" style="background:${ep.color}">${ep.num}</div>
+        <div class="ep-title-block">
+          <h3>${ep.emotion} ${ep.title} (${ep.enTitle})</h3>
+          <div class="sub">${ep.duration}s | ${ep.emotionLabel}</div>
+        </div>
+      </div>
+      <div class="ep-chars">
+        ${ep.characters.map(c => `<span>${c}</span>`).join('')}
+      </div>
+      <div class="platform-tabs">
+        <button class="active" onclick="switchPlatform(${ep.num},'ig',this)" style="color:var(--ig)">Instagram</button>
+        <button onclick="switchPlatform(${ep.num},'yt',this)" style="color:var(--yt)">YouTube</button>
+        <button onclick="switchPlatform(${ep.num},'x',this)" style="color:var(--x)">X</button>
+      </div>
+      <div class="caption-area" id="caption-${ep.num}">
+        <div class="caption-text" id="caption-text-${ep.num}">${ep.ig}</div>
+      </div>
+      ${ep.num ? `<div class="x-count" id="x-count-${ep.num}" style="display:none">${ep.xCount}/280 weighted chars</div>` : ''}
+      <div class="caption-actions" id="actions-${ep.num}">
+        <button class="btn-copy" onclick="copyCaption(${ep.num})">Copy</button>
+        <button class="btn-post btn-ig" id="post-btn-${ep.num}" onclick="openPlatform(${ep.num})">Copy & Open IG</button>
+      </div>
+      <div class="ep-status-row">
+        <button class="ep-status-btn ${getEpPlatformStatus(ep.num,'ig')}" onclick="toggleEpStatus(${ep.num},'ig',this)">
+          IG: ${getEpPlatformStatus(ep.num,'ig') === 'posted' ? 'Posted' : 'Pending'}
+        </button>
+        <button class="ep-status-btn ${getEpPlatformStatus(ep.num,'yt')}" onclick="toggleEpStatus(${ep.num},'yt',this)">
+          YT: ${getEpPlatformStatus(ep.num,'yt') === 'posted' ? 'Posted' : 'Pending'}
+        </button>
+        <button class="ep-status-btn ${getEpPlatformStatus(ep.num,'x')}" onclick="toggleEpStatus(${ep.num},'x',this)">
+          X: ${getEpPlatformStatus(ep.num,'x') === 'posted' ? 'Posted' : 'Pending'}
+        </button>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// Track active platform per episode
+const activePlatform = {};
+EPISODES.forEach(e => activePlatform[e.num] = 'ig');
+
+function switchPlatform(epNum, platform, btn) {
+  activePlatform[epNum] = platform;
+  const ep = EPISODES.find(e => e.num === epNum);
+  const card = document.getElementById('ep-card-' + epNum);
+  card.querySelectorAll('.platform-tabs button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const captions = { ig: ep.ig, yt: ep.ytTitle + '\n\n' + ep.ytDesc, x: ep.x };
+  document.getElementById('caption-text-' + epNum).textContent = captions[platform];
+
+  const xCount = document.getElementById('x-count-' + epNum);
+  if (platform === 'x') {
+    xCount.style.display = 'block';
+  } else {
+    xCount.style.display = 'none';
+  }
+
+  const postBtn = document.getElementById('post-btn-' + epNum);
+  if (platform === 'ig') {
+    postBtn.className = 'btn-post btn-ig';
+    postBtn.textContent = 'Copy & Open IG';
+  } else if (platform === 'yt') {
+    postBtn.className = 'btn-post btn-yt';
+    postBtn.textContent = 'Copy & Open YT';
+  } else {
+    postBtn.className = 'btn-post btn-x';
+    postBtn.textContent = 'Copy & Open X';
+  }
+}
+
+function copyCaption(epNum) {
+  const text = document.getElementById('caption-text-' + epNum).textContent;
+  copyText(text);
+}
+
+function openPlatform(epNum) {
+  const ep = EPISODES.find(e => e.num === epNum);
+  const platform = activePlatform[epNum];
+  const captions = { ig: ep.ig, yt: ep.ytTitle + '\n\n' + ep.ytDesc, x: ep.x };
+  copyText(captions[platform]);
+
+  const urls = {
+    ig: 'https://www.instagram.com/',
+    yt: 'https://studio.youtube.com/',
+    x: 'https://twitter.com/compose/tweet'
+  };
+  setTimeout(() => window.open(urls[platform], '_blank'), 300);
+}
+
+function toggleEpStatus(epNum, platform, btn) {
+  const current = getEpPlatformStatus(epNum, platform);
+  const next = current === 'pending' ? 'posted' : 'pending';
+  setStatus('ep-' + epNum + '-' + platform, next);
+  btn.className = 'ep-status-btn ' + next;
+  const labels = { ig: 'IG', yt: 'YT', x: 'X' };
+  btn.textContent = labels[platform] + ': ' + (next === 'posted' ? 'Posted' : 'Pending');
+  renderStats();
+}
+
+// --- Render Stats ---
+function renderStats() {
+  const el = document.getElementById('tab-stats');
+  let posted = 0;
+  const total = 27; // 9 eps x 3 platforms
+  const platforms = { ig: 0, yt: 0, x: 0 };
+
+  EPISODES.forEach(ep => {
+    ['ig', 'yt', 'x'].forEach(p => {
+      if (getEpPlatformStatus(ep.num, p) === 'posted') {
+        posted++;
+        platforms[p]++;
+      }
+    });
+  });
+
+  const pct = Math.round((posted / total) * 100);
+
+  let tableRows = '';
+  EPISODES.forEach(ep => {
+    const igS = getEpPlatformStatus(ep.num, 'ig');
+    const ytS = getEpPlatformStatus(ep.num, 'yt');
+    const xS = getEpPlatformStatus(ep.num, 'x');
+    tableRows += `<tr>
+      <td>EP${ep.num} ${ep.emotion} ${ep.title}</td>
+      <td><span class="status-dot ${igS}"></span></td>
+      <td><span class="status-dot ${ytS}"></span></td>
+      <td><span class="status-dot ${xS}"></span></td>
+    </tr>`;
+  });
+
+  el.innerHTML = `
+    <h2 style="font-size:1.1rem;margin-bottom:12px">Distribution Progress</h2>
+    <div class="stats-overview">
+      <div class="big">${posted}/${total}</div>
+      <div class="label">Episodes Posted</div>
+      <div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="num" style="color:var(--ig)">${platforms.ig}/9</div>
+        <div class="lbl">Instagram</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" style="color:var(--yt)">${platforms.yt}/9</div>
+        <div class="lbl">YouTube</div>
+      </div>
+      <div class="stat-card">
+        <div class="num" style="color:var(--x)">${platforms.x}/9</div>
+        <div class="lbl">X (Twitter)</div>
+      </div>
+    </div>
+    <div class="ep-status-table">
+      <h3>Episode Status Matrix</h3>
+      <table>
+        <tr><th>Episode</th><th style="color:var(--ig)">IG</th><th style="color:var(--yt)">YT</th><th>X</th></tr>
+        ${tableRows}
+      </table>
+    </div>
+  `;
+}
+
+// --- Render Assets ---
+function renderAssets() {
+  const el = document.getElementById('tab-assets');
+  let html = '<h2 style="font-size:1.1rem;margin-bottom:12px">Character Assets</h2>';
+
+  CHARACTERS.forEach(ch => {
+    html += `<div class="char-card">
+      <div class="char-header">
+        <img class="char-portrait" src="${ch.portrait}" alt="${ch.name}" loading="lazy">
+        <div class="char-name">
+          <h3>${ch.name} (${ch.enName})</h3>
+          <div class="role">${ch.role}</div>
+        </div>
+      </div>
+      <div class="char-images">
+        <div class="img-label">Close-up</div>
+        <img src="${ch.closeup}" alt="${ch.name} closeup" loading="lazy">
+        <div class="url-copy">
+          <input type="text" value="${ch.closeup}" readonly>
+          <button onclick="copyText('${ch.closeup}')">Copy URL</button>
+        </div>
+        <div class="img-label">3-View Sheet</div>
+        <img src="${ch.threeview}" alt="${ch.name} 3view" loading="lazy">
+        <div class="url-copy">
+          <input type="text" value="${ch.threeview}" readonly>
+          <button onclick="copyText('${ch.threeview}')">Copy URL</button>
+        </div>
+        <div class="img-label">Portrait</div>
+        <div class="url-copy">
+          <input type="text" value="${ch.portrait}" readonly>
+          <button onclick="copyText('${ch.portrait}')">Copy URL</button>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+// --- Init ---
+function init() {
+  renderCalendar();
+  renderEpisodes();
+  renderStats();
+  renderAssets();
+}
+</script>
+</body>
+</html>
