@@ -158,6 +158,9 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 .ig-prelaunch-card .cta { font-size:0.72rem; color:var(--ig); font-weight:600; }
 .ig-prelaunch-card .tag-chip { display:inline-block; background:var(--accent); color:#fff; padding:2px 8px; border-radius:8px; font-size:0.65rem; font-weight:600; margin-left:6px; }
 .ig-prelaunch-card .copy-btn { background:var(--ig); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:600; cursor:pointer; margin-top:6px; }
+.ig-asset-badge { display:inline-flex; align-items:center; gap:4px; background:#E8F5E9; color:var(--success); padding:3px 10px; border-radius:10px; font-size:0.68rem; font-weight:700; margin-top:6px; }
+.ig-asset-badge.pending { background:#FFF3E0; color:var(--pending); }
+.ig-asset-path { font-family:monospace; font-size:0.66rem; color:var(--text-secondary); background:#fff; padding:4px 8px; border-radius:6px; margin-top:4px; word-break:break-all; }
 .ig-slide-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--border); font-size:0.78rem; }
 .ig-slide-item:last-child { border-bottom:none; }
 .ig-slide-num { min-width:26px; height:26px; background:var(--ig); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; flex-shrink:0; }
@@ -1101,18 +1104,18 @@ const IG_STRATEGY = {
 歴史に名を残さなかった、名もなき者たちの物語。
 
 全9話のAIアニメシリーズ『無銘 MUMEI』
-公開まで、あと10日。`,cta:`フォローして公開日を待つ`,tagset:`A`},
+公開まで、あと10日。`,cta:`フォローして公開日を待つ`,tagset:`A`,assetStatus:`ready`,assetPath:`prelaunch_assets/D-10_worldview/`,assetCount:`10 images`},
     {day:`D-7`,type:`Carousel 6枚`,title:`キャラクター解禁`,content:`6キャラ3面図を1枚ずつ（宗介→バトゥル→千鶴→竹崎→劉明→宗仁）`,caption:`6人の、名もなき者たち——
 
 守る者、壊す者、創る者、記録する者、迷う者、導く者。
 
-9話を戦い抜く彼らを、これから1人ずつ紹介していく。`,cta:`推しキャラをコメントで教えて`,tagset:`B`},
+9話を戦い抜く彼らを、これから1人ずつ紹介していく。`,cta:`推しキャラをコメントで教えて`,tagset:`B`,assetStatus:`ready`,assetPath:`prelaunch_assets/D-7_characters/`,assetCount:`6 images`},
     {day:`D-3`,type:`Reel 30秒`,title:`シーズン予告`,content:`EP1-9ハイライトモンタージュ（☀️穏やか→🌅カタルシスの感情曲線）`,caption:`穏やかな朝から、神風の夜まで。
 
 9話、630秒。
 AIだけで描き切る、1274年の対馬。
 
-3日後、EP1「対馬の子」公開。`,cta:`通知ON設定をストーリーで解説中`,tagset:`C`},
+3日後、EP1「対馬の子」公開。`,cta:`通知ON設定をストーリーで解説中`,tagset:`C`,assetStatus:`ready`,assetPath:`prelaunch_assets/D-3_hype_reel/`,assetCount:`30s reel`},
     {day:`D-1`,type:`Carousel 5枚`,title:`制作プロセス公開`,content:`失敗テイク×成功カット比較／プロンプト公開／$2.73内訳／60時間タイムライン`,caption:`AIでアニメを作る——
 
 顔は毎カット変わり、刀は消え、服は勝手に変色する。
@@ -1121,8 +1124,8 @@ AIだけで描き切る、1274年の対馬。
 1話の制作費: $2.73
 制作時間: 60時間
 
-明日21時、EP1公開。`,cta:`保存して明日の公開を待つ`,tagset:`A`},
-    {day:`D-0`,type:`Reel 60秒 + Stories`,title:`EP1「対馬の子」本編`,content:`本編Reel公開 + ストーリーで告知 + ハイライト「EP1-3」に追加`,caption:`（Episodesタブの EP1 キャプション使用）`,cta:`コメント欄でEP2の予想を`,tagset:`B`}
+明日21時、EP1公開。`,cta:`保存して明日の公開を待つ`,tagset:`A`,assetStatus:`ready`,assetPath:`prelaunch_assets/D-1_process/`,assetCount:`5 slides`},
+    {day:`D-0`,type:`Reel 60秒 + Stories`,title:`EP1「対馬の子」本編`,content:`本編Reel公開 + ストーリーで告知 + ハイライト「EP1-3」に追加`,caption:`（Episodesタブの EP1 キャプション使用）`,cta:`コメント欄でEP2の予想を`,tagset:`B`,assetStatus:`ready`,assetPath:`episode_assets/EP1/`,assetCount:`reel+captions`}
   ],
   carousel: [
     `フック画像 + 『EP◯ の全工程』タイトル`,
@@ -1538,6 +1541,9 @@ function renderInstagram() {
   // Pre-launch posts
   const prelaunchHtml = s.prelaunch.map(p => {
     const safeCap = p.caption.replace(/`/g, '\\`').replace(/\\/g, '\\\\');
+    const badge = p.assetStatus === 'ready'
+      ? `<div class="ig-asset-badge">✓ 素材完成: ${p.assetCount}</div><div class="ig-asset-path">${p.assetPath}</div>`
+      : `<div class="ig-asset-badge pending">⏳ 素材未生成</div>`;
     return `<div class="ig-prelaunch-card">
       <div class="head">
         <span class="day">${p.day}</span>
@@ -1545,6 +1551,7 @@ function renderInstagram() {
       </div>
       <div class="title">${p.title}</div>
       <div class="desc">${p.content}</div>
+      ${badge}
       <div class="cap">${p.caption}</div>
       <div class="cta">CTA: ${p.cta}</div>
       <button class="copy-btn" onclick="copyText(\`${safeCap}\`)">Copy Caption</button>
