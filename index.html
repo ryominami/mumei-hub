@@ -46,7 +46,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 
 /* Tab Bar */
 .tab-bar { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid var(--border); display:flex; z-index:100; padding-bottom:env(safe-area-inset-bottom); }
-.tab-bar button { flex:1; padding:10px 4px 8px; border:none; background:none; font-size:0.65rem; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
+.tab-bar button { flex:1; padding:10px 2px 8px; border:none; background:none; font-size:0.6rem; color:var(--text-secondary); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
 .tab-bar button.active { color:var(--accent); }
 .tab-bar button .icon { font-size:1.4rem; }
 
@@ -137,6 +137,49 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 .url-copy input { flex:1; font-size:0.7rem; padding:8px; border:1px solid var(--border); border-radius:8px; background:var(--bg); }
 .url-copy button { padding:8px 14px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-size:0.7rem; font-weight:600; cursor:pointer; white-space:nowrap; }
 
+/* Instagram Strategy Tab */
+.ig-section { background:var(--card); border-radius:16px; padding:16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+.ig-section h3 { font-size:0.95rem; margin-bottom:10px; color:var(--ig); display:flex; align-items:center; gap:6px; }
+.ig-section h3::before { content:''; display:inline-block; width:4px; height:16px; background:var(--ig); border-radius:2px; }
+.ig-account-row { display:flex; justify-content:space-between; padding:6px 0; font-size:0.8rem; border-bottom:1px dashed var(--border); gap:8px; }
+.ig-account-row:last-child { border-bottom:none; }
+.ig-account-row .k { color:var(--text-secondary); flex-shrink:0; min-width:70px; }
+.ig-account-row .v { text-align:right; word-break:break-all; font-weight:500; }
+.ig-bio { background:var(--bg); padding:10px 12px; border-radius:8px; font-size:0.8rem; white-space:pre-wrap; line-height:1.5; margin:8px 0; }
+.ig-highlights { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+.ig-highlights span { background:linear-gradient(135deg,#E4405F,#DAA520); color:#fff; padding:4px 12px; border-radius:16px; font-size:0.7rem; font-weight:600; }
+.ig-prelaunch-card { background:var(--bg); border-radius:10px; padding:12px; margin-bottom:8px; border-left:3px solid var(--ig); }
+.ig-prelaunch-card .head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px; }
+.ig-prelaunch-card .day { background:var(--ig); color:#fff; padding:2px 10px; border-radius:10px; font-size:0.7rem; font-weight:700; }
+.ig-prelaunch-card .type { font-size:0.7rem; color:var(--text-secondary); }
+.ig-prelaunch-card .title { font-size:0.9rem; font-weight:700; margin:4px 0; }
+.ig-prelaunch-card .desc { font-size:0.75rem; color:var(--text-secondary); margin-bottom:6px; }
+.ig-prelaunch-card .cap { background:#fff; padding:10px; border-radius:8px; font-size:0.78rem; line-height:1.6; white-space:pre-wrap; margin:6px 0; }
+.ig-prelaunch-card .cta { font-size:0.72rem; color:var(--ig); font-weight:600; }
+.ig-prelaunch-card .tag-chip { display:inline-block; background:var(--accent); color:#fff; padding:2px 8px; border-radius:8px; font-size:0.65rem; font-weight:600; margin-left:6px; }
+.ig-prelaunch-card .copy-btn { background:var(--ig); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:600; cursor:pointer; margin-top:6px; }
+.ig-slide-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--border); font-size:0.78rem; }
+.ig-slide-item:last-child { border-bottom:none; }
+.ig-slide-num { min-width:26px; height:26px; background:var(--ig); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; flex-shrink:0; }
+.ig-tagset { padding:10px; background:var(--bg); border-radius:10px; margin-bottom:8px; }
+.ig-tagset .head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:6px; }
+.ig-tagset .key { font-weight:700; font-size:0.85rem; color:var(--ig); }
+.ig-tagset .lbl { font-size:0.7rem; color:var(--text-secondary); }
+.ig-tagset .tags { font-size:0.75rem; line-height:1.7; word-break:break-word; }
+.ig-tagset .copy { background:var(--ig); color:#fff; border:none; padding:4px 10px; border-radius:6px; font-size:0.65rem; font-weight:600; cursor:pointer; }
+.ig-timing-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed var(--border); font-size:0.8rem; gap:8px; }
+.ig-timing-item:last-child { border-bottom:none; }
+.ig-timing-item .t { font-weight:600; }
+.ig-timing-item .time { color:var(--ig); font-weight:600; }
+.ig-timing-item .note { display:block; font-size:0.7rem; color:var(--text-secondary); margin-top:2px; }
+.ig-rule-item { display:flex; gap:8px; padding:6px 0; font-size:0.78rem; line-height:1.5; border-bottom:1px dashed var(--border); }
+.ig-rule-item:last-child { border-bottom:none; }
+.ig-rule-item::before { content:'✓'; color:var(--success); font-weight:700; flex-shrink:0; }
+.ig-story-item { display:grid; grid-template-columns:70px 1fr 50px; gap:8px; padding:8px 0; border-bottom:1px dashed var(--border); font-size:0.76rem; align-items:center; }
+.ig-story-item:last-child { border-bottom:none; }
+.ig-story-item .timing { color:var(--ig); font-weight:700; font-size:0.72rem; }
+.ig-story-item .goal { background:var(--accent); color:#fff; padding:2px 6px; border-radius:6px; font-size:0.6rem; font-weight:600; text-align:center; }
+
 /* Toast */
 .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 24px; border-radius:20px; font-size:0.8rem; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
 .toast.show { opacity:1; }
@@ -167,6 +210,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
   <div class="content">
     <div id="tab-calendar" class="tab-panel active"></div>
     <div id="tab-episodes" class="tab-panel"></div>
+    <div id="tab-instagram" class="tab-panel"></div>
     <div id="tab-stats" class="tab-panel"></div>
     <div id="tab-assets" class="tab-panel"></div>
   </div>
@@ -174,6 +218,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
   <div class="tab-bar">
     <button class="active" data-tab="calendar"><span class="icon">&#128197;</span>Calendar</button>
     <button data-tab="episodes"><span class="icon">&#127916;</span>Episodes</button>
+    <button data-tab="instagram"><span class="icon" style="color:#E4405F">&#128247;</span>Instagram</button>
     <button data-tab="stats"><span class="icon">&#128202;</span>Stats</button>
     <button data-tab="assets"><span class="icon">&#128444;</span>Assets</button>
   </div>
@@ -836,6 +881,84 @@ const SCHEDULE = [
     }
   ];
 
+const IG_STRATEGY = {
+  account: {name:`MUMEI｜無銘 - AIアニメ`,handle:`@mumei_anime (or @mumei.saga)`,category:`Digital Creator`,bio:`🏯 1274年 対馬 蒙古襲来
+🎬 AIだけで作る全9話アニメ
+⚔️ 毎週更新｜JP音声+EN字幕
+🛠 制作: Ryo (KAMUI CODE)
+👇 最新話`,link:`https://ryominami.github.io/mumei-hub/`,highlights:[`EP1-3`, `EP4-6`, `EP7-9`, `キャラ`, `BTS`, `プロンプト`, `コスト`]},
+  prelaunch: [
+    {day:`D-10`,type:`Carousel 10枚`,title:`世界観ティーザー`,content:`1274年対馬の風景＋キービジュアル。無音で世界観だけ見せる`,caption:`1274年、対馬の漁村で——
+
+歴史に名を残さなかった、名もなき者たちの物語。
+
+全9話のAIアニメシリーズ『無銘 MUMEI』
+公開まで、あと10日。`,cta:`フォローして公開日を待つ`,tagset:`A`},
+    {day:`D-7`,type:`Carousel 6枚`,title:`キャラクター解禁`,content:`6キャラ3面図を1枚ずつ（宗介→バトゥル→千鶴→竹崎→劉明→宗仁）`,caption:`6人の、名もなき者たち——
+
+守る者、壊す者、創る者、記録する者、迷う者、導く者。
+
+9話を戦い抜く彼らを、これから1人ずつ紹介していく。`,cta:`推しキャラをコメントで教えて`,tagset:`B`},
+    {day:`D-3`,type:`Reel 30秒`,title:`シーズン予告`,content:`EP1-9ハイライトモンタージュ（☀️穏やか→🌅カタルシスの感情曲線）`,caption:`穏やかな朝から、神風の夜まで。
+
+9話、630秒。
+AIだけで描き切る、1274年の対馬。
+
+3日後、EP1「対馬の子」公開。`,cta:`通知ON設定をストーリーで解説中`,tagset:`C`},
+    {day:`D-1`,type:`Carousel 5枚`,title:`制作プロセス公開`,content:`失敗テイク×成功カット比較／プロンプト公開／$2.73内訳／60時間タイムライン`,caption:`AIでアニメを作る——
+
+顔は毎カット変わり、刀は消え、服は勝手に変色する。
+
+でも、そこにしかない表現も見つけた。
+1話の制作費: $2.73
+制作時間: 60時間
+
+明日21時、EP1公開。`,cta:`保存して明日の公開を待つ`,tagset:`A`},
+    {day:`D-0`,type:`Reel 60秒 + Stories`,title:`EP1「対馬の子」本編`,content:`本編Reel公開 + ストーリーで告知 + ハイライト「EP1-3」に追加`,caption:`（Episodesタブの EP1 キャプション使用）`,cta:`コメント欄でEP2の予想を`,tagset:`B`}
+  ],
+  carousel: [
+    `フック画像 + 『EP◯ の全工程』タイトル`,
+    `エピソード概要（秒数/感情/登場キャラ/あらすじ1行）`,
+    `キャラ3面図（このEP主役）`,
+    `絵コンテ抜粋（10シーンから代表3枚）`,
+    `プロンプト実例（1カット分・全文公開）`,
+    `失敗テイク比較（顔崩壊 vs 成功）`,
+    `使用AIツール（Kling/Veo/Seedance + Remotion）`,
+    `制作時間60時間の内訳グラフ`,
+    `コスト$2.73の内訳円グラフ`,
+    `次回予告 + フォローCTA`
+  ],
+  tagsets: [
+    {key:`Branded`,label:`毎回必須`,tags:[`#MUMEI`, `#無銘アニメ`, `#MUMEIep1`]},
+    {key:`A`,label:`AI/Tech軸`,tags:[`#AIAnime`, `#AIVideo`, `#AIArt`, `#GenerativeArt`, `#TextToVideo`]},
+    {key:`B`,label:`Anime/Story軸`,tags:[`#AnimeShort`, `#AnimeEdit`, `#AnimeCinematic`, `#IndieAnime`, `#AnimeSeries`]},
+    {key:`C`,label:`Historical軸`,tags:[`#HistoricalAnime`, `#SamuraiAnime`, `#JapaneseHistory`, `#MongolInvasion`, `#Angolmois`]}
+  ],
+  stories: [
+    {timing:`投稿直後`,content:`Reel告知＋「New Episode」ステッカー`,goal:`通知`},
+    {timing:`+30分`,content:`Q&Aステッカー『このEP、どこが刺さった？』`,goal:`エンゲージ`},
+    {timing:`翌日`,content:`BTS写真＋投票ステッカー『次回の展開予想』`,goal:`BTS/参加`},
+    {timing:`+3日`,content:`次回予告カウントダウンステッカー`,goal:`保持`},
+    {timing:`+5日`,content:`ハイライト『EP1-3』に追加＋告知`,goal:`アーカイブ`}
+  ],
+  timing: [
+    {type:`Reel本編`,time:`21:00 JST`,note:`平日夜ピーク。金曜or水曜推奨`},
+    {type:`Carousel BTS`,time:`12:00 JST`,note:`ランチタイム滞在時間長い`},
+    {type:`Stories`,time:`21:00以降`,note:`毎日1本を目安`},
+    {type:`避けるべき`,time:`日曜23時以降`,note:`エンゲージ最低帯`}
+  ],
+  rules: [
+    `ハッシュタグは1投稿 3-5個（2025年12月以降の上限5）`,
+    `同じタグ組を2連続で使わない（重複ペナルティ）`,
+    `ブランドタグ \`#MUMEI #無銘アニメ\` は毎回必須、EP別タグを加える`,
+    `5K未満はキャプション末尾、100K以上はファーストコメントに配置`,
+    `\`#anime\` \`#otaku\` 単体タグは避ける（発見性ゼロ）`,
+    `Reelは縦型9:16、冒頭0-2秒で世界観/フックを確定させる`,
+    `カルーセルは1枚目でスワイプを誘う（未完成の情報/数字/比較）`,
+    `Instagram音源トレンドを月1でチェック、BTSカルーセルに流行音源を当てる`
+  ]
+};
+
 const PW_HASH = 'a37ddc209a22a1c3912546bf963d878b258363129a9a07a0730a9ef8555724f7';
 
 // --- Password ---
@@ -1182,10 +1305,121 @@ function renderAssets() {
   el.innerHTML = html;
 }
 
+// --- Render Instagram Strategy ---
+function renderInstagram() {
+  const el = document.getElementById('tab-instagram');
+  const s = IG_STRATEGY;
+
+  // Account setup
+  const acc = s.account;
+  const highlightsHtml = acc.highlights.map(h => `<span>${h}</span>`).join('');
+  const accountHtml = `
+    <div class="ig-section">
+      <h3>Account Setup</h3>
+      <div class="ig-account-row"><span class="k">Name</span><span class="v">${acc.name}</span></div>
+      <div class="ig-account-row"><span class="k">Handle</span><span class="v">${acc.handle}</span></div>
+      <div class="ig-account-row"><span class="k">Category</span><span class="v">${acc.category}</span></div>
+      <div class="ig-account-row"><span class="k">Link</span><span class="v" style="font-size:0.7rem">${acc.link}</span></div>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:10px;margin-bottom:4px">Bio (150 char max)</div>
+      <div class="ig-bio">${acc.bio}</div>
+      <button class="copy-btn" style="background:var(--ig);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer" onclick="copyText(\`${acc.bio.replace(/`/g,'\\`')}\`)">Copy Bio</button>
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-top:12px;margin-bottom:4px">Highlights (作成順)</div>
+      <div class="ig-highlights">${highlightsHtml}</div>
+    </div>`;
+
+  // Pre-launch posts
+  const prelaunchHtml = s.prelaunch.map(p => {
+    const safeCap = p.caption.replace(/`/g, '\\`').replace(/\\/g, '\\\\');
+    return `<div class="ig-prelaunch-card">
+      <div class="head">
+        <span class="day">${p.day}</span>
+        <span class="type">${p.type}<span class="tag-chip">Set ${p.tagset}</span></span>
+      </div>
+      <div class="title">${p.title}</div>
+      <div class="desc">${p.content}</div>
+      <div class="cap">${p.caption}</div>
+      <div class="cta">CTA: ${p.cta}</div>
+      <button class="copy-btn" onclick="copyText(\`${safeCap}\`)">Copy Caption</button>
+    </div>`;
+  }).join('');
+  const prelaunchSection = `
+    <div class="ig-section">
+      <h3>Pre-Launch Posts (EP1公開までの5投稿)</h3>
+      ${prelaunchHtml}
+    </div>`;
+
+  // Carousel template
+  const carouselHtml = s.carousel.map((c, i) =>
+    `<div class="ig-slide-item"><div class="ig-slide-num">${i+1}</div><div>${c}</div></div>`
+  ).join('');
+  const carouselSection = `
+    <div class="ig-section">
+      <h3>Carousel Template (各EP制作軸10枚)</h3>
+      ${carouselHtml}
+    </div>`;
+
+  // Hashtag sets
+  const tagsetsHtml = s.tagsets.map(t => {
+    const tagsStr = t.tags.join(' ');
+    return `<div class="ig-tagset">
+      <div class="head">
+        <span><span class="key">Set ${t.key}</span> <span class="lbl">${t.label}</span></span>
+        <button class="copy" onclick="copyText(\`${tagsStr}\`)">Copy</button>
+      </div>
+      <div class="tags">${tagsStr}</div>
+    </div>`;
+  }).join('');
+  const tagsetsSection = `
+    <div class="ig-section">
+      <h3>Hashtag Rotation (3-5個/投稿、Branded必須)</h3>
+      <div style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:8px">Branded + A/B/C から1セット選ぶ。同じ組を2連続で使わない。</div>
+      ${tagsetsHtml}
+    </div>`;
+
+  // Stories plan
+  const storiesHtml = s.stories.map(st =>
+    `<div class="ig-story-item">
+      <span class="timing">${st.timing}</span>
+      <span>${st.content}</span>
+      <span class="goal">${st.goal}</span>
+    </div>`
+  ).join('');
+  const storiesSection = `
+    <div class="ig-section">
+      <h3>Stories Plan (各EP投稿後の5本)</h3>
+      ${storiesHtml}
+    </div>`;
+
+  // Timing
+  const timingHtml = s.timing.map(t =>
+    `<div class="ig-timing-item">
+      <span class="t">${t.type}<span class="note">${t.note}</span></span>
+      <span class="time">${t.time}</span>
+    </div>`
+  ).join('');
+  const timingSection = `
+    <div class="ig-section">
+      <h3>Optimal Posting Times (JST)</h3>
+      ${timingHtml}
+    </div>`;
+
+  // Rules
+  const rulesHtml = s.rules.map(r => `<div class="ig-rule-item"><span>${r}</span></div>`).join('');
+  const rulesSection = `
+    <div class="ig-section">
+      <h3>運用ルール (2026年アルゴ対応)</h3>
+      ${rulesHtml}
+    </div>`;
+
+  el.innerHTML = `<h2 style="font-size:1.1rem;margin-bottom:12px;color:var(--ig)">📷 Instagram Strategy</h2>`
+    + accountHtml + prelaunchSection + carouselSection + tagsetsSection + storiesSection + timingSection + rulesSection;
+}
+
 // --- Init ---
 function init() {
   renderCalendar();
   renderEpisodes();
+  renderInstagram();
   renderStats();
   renderAssets();
 }
