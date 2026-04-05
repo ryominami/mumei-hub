@@ -179,6 +179,16 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 .ig-story-item:last-child { border-bottom:none; }
 .ig-story-item .timing { color:var(--ig); font-weight:700; font-size:0.72rem; }
 .ig-story-item .goal { background:var(--accent); color:#fff; padding:2px 6px; border-radius:6px; font-size:0.6rem; font-weight:600; text-align:center; }
+.ig-quickstart { background:linear-gradient(135deg,#E4405F,#DAA520); border-radius:16px; padding:16px; margin-bottom:16px; color:#fff; box-shadow:0 4px 12px rgba(228,64,95,0.25); }
+.ig-quickstart h3 { font-size:1rem; margin-bottom:4px; color:#fff; }
+.ig-quickstart h3::before { display:none; }
+.ig-quickstart .subtitle { font-size:0.75rem; opacity:0.9; margin-bottom:12px; }
+.ig-step { background:rgba(255,255,255,0.12); backdrop-filter:blur(4px); border-radius:10px; padding:10px 12px; margin-bottom:8px; }
+.ig-step .num { display:inline-block; width:22px; height:22px; background:#fff; color:var(--ig); border-radius:50%; text-align:center; line-height:22px; font-size:0.75rem; font-weight:800; margin-right:8px; vertical-align:middle; }
+.ig-step .label { font-size:0.85rem; font-weight:700; vertical-align:middle; }
+.ig-step .body { font-size:0.75rem; line-height:1.7; margin-top:6px; padding-left:30px; opacity:0.95; }
+.ig-step .where { display:inline-block; background:rgba(0,0,0,0.25); padding:2px 8px; border-radius:6px; font-size:0.68rem; margin:2px 4px 2px 0; font-weight:600; }
+.ig-phase-title { font-size:0.8rem; font-weight:700; margin:10px 0 6px; opacity:0.95; text-transform:uppercase; letter-spacing:0.05em; }
 .ig-ep-card { background:var(--bg); border-radius:10px; padding:12px; margin-bottom:10px; border-left:3px solid var(--ig); }
 .ig-ep-card .ep-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
 .ig-ep-card .ep-num-sm { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800; color:#fff; flex-shrink:0; }
@@ -1655,8 +1665,76 @@ function renderInstagram() {
       </div>
     </div>`;
 
+  // Quick Start — 明日の投稿手順
+  const quickStart = `
+    <div class="ig-quickstart">
+      <h3>🚀 明日の投稿手順</h3>
+      <div class="subtitle">D-7 キャラクター解禁カルーセル（最速ルート）</div>
+
+      <div class="ig-phase-title">▼ 投稿前の準備（10分）</div>
+      <div class="ig-step">
+        <span class="num">1</span><span class="label">アカウント作成 / 設定</span>
+        <div class="body">
+          <span class="where">Instagram タブ → Account Setup</span>
+          アカウント名・ハンドル・カテゴリを設定。<br>
+          <strong>Copy Bio</strong> を押してBioを貼り付け。<br>
+          プロフィールリンクに <code style="font-size:0.7rem">ryominami.github.io/mumei-hub</code> を設定。
+        </div>
+      </div>
+      <div class="ig-step">
+        <span class="num">2</span><span class="label">画像素材の取得</span>
+        <div class="body">
+          <span class="where">Assets タブ</span>
+          6キャラ（宗介→バトゥル→千鶴→竹崎→劉明→宗仁）の<strong>3-View Sheet</strong>画像を保存。<br>
+          <strong>Copy URL</strong> でFAL URLを取得 → ブラウザで開いて右クリック保存。<br>
+          → カルーセル投稿用 6枚を用意。
+        </div>
+      </div>
+
+      <div class="ig-phase-title">▼ 投稿（5分）12:00 JST推奨</div>
+      <div class="ig-step">
+        <span class="num">3</span><span class="label">Instagramアプリで新規投稿</span>
+        <div class="body">
+          Instagramアプリ → 「+」→「投稿」→ カルーセル選択。<br>
+          6枚の3面図を順番通り（宗介→バトゥル→千鶴→竹崎→劉明→宗仁）に追加。<br>
+          1枚目が表紙になるので<strong>宗介を必ず1枚目</strong>に。
+        </div>
+      </div>
+      <div class="ig-step">
+        <span class="num">4</span><span class="label">キャプションを貼り付け</span>
+        <div class="body">
+          <span class="where">Instagram タブ → Pre-Launch D-7カード</span>
+          <strong>Copy Caption</strong> を押してキャプションをコピー → Instagram投稿画面に貼り付け。<br>
+          末尾にハッシュタグ追加: <span class="where">Set B の Copy</span> + <span class="where">Branded の Copy</span>。
+        </div>
+      </div>
+      <div class="ig-step">
+        <span class="num">5</span><span class="label">投稿 → Calendar更新</span>
+        <div class="body">
+          投稿完了後、<span class="where">Calendar タブ</span> で該当日を <strong>Posted</strong> に切替。
+        </div>
+      </div>
+
+      <div class="ig-phase-title">▼ 投稿後アクション（即 + 翌日）</div>
+      <div class="ig-step">
+        <span class="num">6</span><span class="label">Stories 連動</span>
+        <div class="body">
+          投稿<strong>直後</strong>: 新着投稿のリポスト（ステッカーで）<br>
+          <strong>+30分</strong>: Q&Aステッカー「推しキャラは誰？」<br>
+          <span class="where">Stories Plan 参照</span>
+        </div>
+      </div>
+      <div class="ig-step">
+        <span class="num">7</span><span class="label">Xにも横展開</span>
+        <div class="body">
+          同じ6枚＋短縮キャプションをX投稿（140字以内）。<br>
+          「推しキャラ教えて」でエンゲージ誘発。
+        </div>
+      </div>
+    </div>`;
+
   el.innerHTML = `<h2 style="font-size:1.1rem;margin-bottom:12px;color:var(--ig)">📷 Instagram Strategy</h2>`
-    + accountHtml + prelaunchSection + carouselSection + tagsetsSection + storiesSection + timingSection + rulesSection + autoSection + epSection;
+    + quickStart + accountHtml + prelaunchSection + carouselSection + tagsetsSection + storiesSection + timingSection + rulesSection + autoSection + epSection;
 }
 
 // Track active IG caption type per episode
