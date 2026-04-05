@@ -179,6 +179,15 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',s
 .ig-story-item:last-child { border-bottom:none; }
 .ig-story-item .timing { color:var(--ig); font-weight:700; font-size:0.72rem; }
 .ig-story-item .goal { background:var(--accent); color:#fff; padding:2px 6px; border-radius:6px; font-size:0.6rem; font-weight:600; text-align:center; }
+.ig-ep-card { background:var(--bg); border-radius:10px; padding:12px; margin-bottom:10px; border-left:3px solid var(--ig); }
+.ig-ep-card .ep-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.ig-ep-card .ep-num-sm { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:800; color:#fff; flex-shrink:0; }
+.ig-ep-card .ep-title-sm { font-size:0.85rem; font-weight:700; flex:1; }
+.ig-ep-tabs { display:flex; gap:4px; margin-bottom:8px; }
+.ig-ep-tabs button { flex:1; padding:6px 4px; border:1px solid var(--border); background:#fff; font-size:0.68rem; font-weight:600; border-radius:6px; cursor:pointer; color:var(--text-secondary); }
+.ig-ep-tabs button.active { background:var(--ig); color:#fff; border-color:var(--ig); }
+.ig-ep-text { background:#fff; padding:10px 12px; border-radius:8px; font-size:0.75rem; line-height:1.6; white-space:pre-wrap; max-height:180px; overflow-y:auto; word-break:break-word; }
+.ig-ep-copy { background:var(--ig); color:#fff; border:none; padding:6px 12px; border-radius:8px; font-size:0.7rem; font-weight:600; cursor:pointer; margin-top:6px; width:100%; }
 
 /* Toast */
 .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#333; color:#fff; padding:10px 24px; border-radius:20px; font-size:0.8rem; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
@@ -253,6 +262,27 @@ const EPISODES = [
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP1「対馬の子」を作った全工程、10枚で公開。
+
+☀️ 穏やかの70秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 父と子の距離感を出すのに、カメラ高さを3回変えた
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep1 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP1「対馬の子」公開
+☀️ 穏やか / 70秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP1 "対馬の子" (Child of Tsushima) | AI Anime Short Film`,
       ytDesc: `A peaceful morning in a fishing village. Sosuke and his father's daily life. His father teaches him the warrior's way of announcing one's name.
 平和な漁村の朝。宗介と父の日常。父が語る「武士の名乗り」の教え。
@@ -297,6 +327,27 @@ AI×Remotionで作った60秒シネマティックアニメ。1274年の対馬�
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP2「黒い壁」を作った全工程、10枚で公開。
+
+😨 恐怖の75秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 900隻の船団、1隻→10隻→100隻のスケール表現で3テイク
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep2 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP2「黒い壁」公開
+😨 恐怖 / 75秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP2 "黒い壁" (The Black Wall) | AI Anime Short Film`,
       ytDesc: `900 ships fill the horizon. The islanders freeze in terror. His father dons armor.
 水平線を埋め尽くす900隻。恐怖に凍りつく島民。父が鎧を着る。
@@ -341,6 +392,27 @@ Episode 2/9 | 75s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP3「名乗り」を作った全工程、10枚で公開。
+
+😭 慟哭の90秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 79騎の侍が散るシーン、矢の雨をRemotionで手付けした
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep3 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP3「名乗り」公開
+😭 慟哭 / 90秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP3 "名乗り" (The Challenge) | AI Anime Short Film`,
       ytDesc: `His father announces his name on the beach. The Mongols answer with a rain of arrows. 79 samurai fall.
 父が浜辺で名乗りを上げる。蒙古は矢の豪雨で応える。79騎の侍が散る。
@@ -385,6 +457,27 @@ Episode 3/9 | 90s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP4「海へ」を作った全工程、10枚で公開。
+
+💪 決死の80秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 崖から海への飛躍、Klingで最も苦戦。5テイク撮り直し
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep4 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP4「海へ」公開
+💪 決死 / 80秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP4 "海へ" (To the Sea) | AI Anime Short Film`,
       ytDesc: `Sosuke runs through the burning village carrying an old woman. Hit by an arrow, he leaps from a cliff into the sea.
 村が燃える中、老婆を背負い走る宗介。矢を受けながら崖から海へ飛ぶ。
@@ -429,6 +522,27 @@ Episode 4/9 | 80s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP5「鍛冶場」を作った全工程、10枚で公開。
+
+🔥 温もりの75秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 鍛冶場の炎、Veo一発OK。AIが得意な質感の代表例
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep5 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP5「鍛冶場」公開
+🔥 温もり / 75秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP5 "鍛冶場" (The Forge) | AI Anime Short Film`,
       ytDesc: `Sosuke heals at Chizuru's forge. The meeting of 'one who destroys' and 'one who creates.' A broken sword can be reforged.
 千鶴の鍛冶場で傷を癒す。「壊す者」と「創る者」の出会い。折れた刀を「直せる」。
@@ -473,6 +587,27 @@ AIで「静の演技」を描く難しさよ。`,
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP6「てつはう」を作った全工程、10枚で公開。
+
+💥 戦慄の90秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 4キャラ同時登場、一貫性の壁。顔ccip40超え修正2回
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep6 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP6「てつはう」公開
+💥 戦慄 / 90秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP6 "てつはう" (Tetsuhau) | AI Anime Short Film`,
       ytDesc: `The great battle of Hakata Bay. Tetsuhau explosions. Liu Ming deserts from the enemy. Sosuke fights with his back to the stone wall, but—
 博多湾大激戦。てつはう爆発。劉明が敵陣から脱走。宗介は石塁を背に戦うが——
@@ -517,6 +652,27 @@ Episode 6/9 | 90s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP7「打ち直し」を作った全工程、10枚で公開。
+
+🔨 再生の80秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 鍛冶シーン長尺、テンポ落とす勇気との戦い
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep7 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP7「打ち直し」公開
+🔨 再生 / 80秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP7 "打ち直し" (Reforging) | AI Anime Short Film`,
       ytDesc: `The night before the Koan Invasion. Chizuru: 'What is broken becomes stronger when reforged.' An all-night reforging.
 弘安の役前夜。千鶴が「壊れたものは打ち直せば強くなる」。一晩かけた再鍛造。
@@ -561,6 +717,27 @@ Episode 7/9 | 80s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP8「神風」を作った全工程、10枚で公開。
+
+⚔️ 極限の90秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 嵐の稲妻、偶然生まれた構図がシリーズ最高カット
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep8 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP8「神風」公開
+⚔️ 極限 / 90秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP8 "神風" (Kamikaze) | AI Anime Short Film`,
       ytDesc: `The final duel on a burning Mongol ship. Sosuke and Batur see in each other 'one who protects.' The storm comes—
 燃える蒙古船上で最終決闘。宗介とバトゥル、互いに「守る者」を見る。嵐が——
@@ -605,6 +782,27 @@ Episode 8/9 | 90s
 フォローして次のエピソードをお見逃しなく
 
 #無銘 #MUMEI #AIアニメ #AIAnime #元寇 #蒙古襲来 #鎌倉時代 #ShortFilm #ショートフィルム #AI映像 #AIart #AIVideo #対馬 #Tsushima #アニメ #Anime #cinematicart #Kling #Veo #Seedance #Remotion`,
+      igCarousel: `EP9「絵巻」を作った全工程、10枚で公開。
+
+🌅 カタルシスの75秒。
+
+使ったAI: Kling / Veo / Seedance / Remotion
+制作時間: 約60時間
+費用: $2.73
+
+一番苦戦したカット:
+→ 蒙古襲来絵詞へのモーフィング、最後の1週間の集中
+
+スワイプで全工程を見る→
+
+保存して自分の制作に活かしてください。
+本編Reelは前の投稿から。
+
+#MUMEI #無銘アニメ #MUMEIep9 #AIAnime #AIVideo #AIクリエイター #AI映像制作 #生成AI #舞台裏 #制作過程`,
+      igStories: `🆕 EP9「絵巻」公開
+🌅 カタルシス / 75秒
+
+→ プロフィールリンクから視聴`,
       ytTitle: `MUMEI EP9 "絵巻" (Emaki) | AI Anime Short Film`,
       ytDesc: `The morning after the storm. Four survivors watch the sunrise. Takezaki paints on a scroll—a record of nameless heroes.
 嵐の翌朝。生き残った4人が朝日を見る。竹崎が絵巻に描く——名もなき英雄の記録。
@@ -1411,8 +1609,70 @@ function renderInstagram() {
       ${rulesHtml}
     </div>`;
 
+  // Per-episode caption cards (Reel / Carousel / Stories)
+  const epCardsHtml = EPISODES.map(ep => {
+    return `<div class="ig-ep-card" id="ig-ep-${ep.num}">
+      <div class="ep-head">
+        <div class="ep-num-sm" style="background:${ep.color}">${ep.num}</div>
+        <div class="ep-title-sm">${ep.emotion} ${ep.title} (${ep.duration}s)</div>
+      </div>
+      <div class="ig-ep-tabs">
+        <button class="active" data-type="reel" onclick="switchIgEpTab(${ep.num},'reel',this)">Reel</button>
+        <button data-type="carousel" onclick="switchIgEpTab(${ep.num},'carousel',this)">Carousel</button>
+        <button data-type="stories" onclick="switchIgEpTab(${ep.num},'stories',this)">Stories</button>
+      </div>
+      <div class="ig-ep-text" id="ig-ep-text-${ep.num}">${ep.ig}</div>
+      <button class="ig-ep-copy" onclick="copyIgEp(${ep.num})">Copy Caption</button>
+    </div>`;
+  }).join('');
+  const epSection = `
+    <div class="ig-section">
+      <h3>Episode Captions (Reel / Carousel / Stories)</h3>
+      <div style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:10px">各EPに3種類のIGキャプション。Reelは本編、Carouselは制作10枚用、Storiesは短文告知。</div>
+      ${epCardsHtml}
+    </div>`;
+
+  // Automation section
+  const autoSection = `
+    <div class="ig-section">
+      <h3>🛠 Distribution Automation</h3>
+      <div style="font-size:0.78rem;line-height:1.6;color:var(--text-secondary);margin-bottom:10px">
+        EP完成後、1コマンドで5プラットフォーム分の素材を自動生成。
+      </div>
+      <div style="background:#1a1a2e;color:#DAA520;padding:10px 12px;border-radius:8px;font-family:monospace;font-size:0.78rem;margin-bottom:10px">
+        $ ./mumei-distribute.sh 1
+      </div>
+      <div style="font-size:0.75rem;line-height:1.8">
+        <div>📦 <strong>episode_assets/EP1/</strong> に出力:</div>
+        <div style="padding-left:12px;color:var(--text-secondary)">
+          • reel_full.mp4 — YT/IG Reel/TikTok本編<br>
+          • reel_60s.mp4 — IG Reel 60秒版<br>
+          • hook_15s.mp4 — TikTok/X動画用<br>
+          • teaser_6s.gif — X投稿用<br>
+          • thumbnail.jpg — YT/OGP<br>
+          • captions/ — 全プラットフォーム投稿文
+        </div>
+      </div>
+    </div>`;
+
   el.innerHTML = `<h2 style="font-size:1.1rem;margin-bottom:12px;color:var(--ig)">📷 Instagram Strategy</h2>`
-    + accountHtml + prelaunchSection + carouselSection + tagsetsSection + storiesSection + timingSection + rulesSection;
+    + accountHtml + prelaunchSection + carouselSection + tagsetsSection + storiesSection + timingSection + rulesSection + autoSection + epSection;
+}
+
+// Track active IG caption type per episode
+const igEpType = {};
+function switchIgEpTab(epNum, type, btn) {
+  igEpType[epNum] = type;
+  const ep = EPISODES.find(e => e.num === epNum);
+  const card = document.getElementById('ig-ep-' + epNum);
+  card.querySelectorAll('.ig-ep-tabs button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const map = { reel: ep.ig, carousel: ep.igCarousel, stories: ep.igStories };
+  document.getElementById('ig-ep-text-' + epNum).textContent = map[type];
+}
+function copyIgEp(epNum) {
+  const text = document.getElementById('ig-ep-text-' + epNum).textContent;
+  copyText(text);
 }
 
 // --- Init ---
